@@ -25,6 +25,7 @@ des comparaisons, une exploration de trajectoires individuelles et un onglet de 
 |---|---|
 | `index.html` | page du tableau de bord |
 | `assets/app.js`, `assets/app.css`, `assets/theme.css` | graphiques (d3), mise en page et jetons de style (mode clair et sombre) |
+| `assets/intro.js`, `assets/intro.css` | section d’accueil : chiffres de la présentation lus dans les CSV, courbe d’âge annotée (BPM, tous postes) et boutons qui ouvrent les onglets |
 | `assets/dash.js` | petite couche de données : charge les CSV, garde les filtres dans l’adresse (`?metric=per&pos=C`) et l’onglet dans l’ancre (`#methode`) |
 | `assets/d3.min.js` | d3 v7.9.0 (licence ISC) |
 | `data/*.csv` | résultats des calculs et indicateurs par joueur et par saison utilisés par la page |

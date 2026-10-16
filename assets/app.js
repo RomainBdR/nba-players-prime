@@ -1320,8 +1320,14 @@ function showTab(name) {
     b.setAttribute('aria-selected', String(on));
     b.tabIndex = on ? 0 : -1;
   });
+  // on ne fait défiler que la barre d’onglets, pas la page : sinon l’ouverture se décalerait vers le bas quand la barre n’est pas en haut de page
   const act = $('#tabbtn-' + name);
-  try { act.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) { /* sans effet */ }
+  const bar = $('.nb-tabs');
+  if (bar && bar.scrollWidth > bar.clientWidth) {
+    const br = bar.getBoundingClientRect(), ar = act.getBoundingClientRect();
+    if (ar.left < br.left) bar.scrollLeft -= (br.left - ar.left) + 8;
+    else if (ar.right > br.right) bar.scrollLeft += (ar.right - br.right) + 8;
+  }
 }
 function updateTabFade() {
   const t = $('.nb-tabs');
