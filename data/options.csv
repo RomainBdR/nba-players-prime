@@ -1,0 +1,27 @@
+filtre,valeur,libelle,ordre
+pos,all,Tous les postes,1
+pos,G,Meneurs et arrières,2
+pos,F,Ailiers,3
+pos,C,Pivots,4
+era,all,Toutes les saisons,1
+era,1974-1989,1974 à 1989,2
+era,1990-1999,1990 à 1999,3
+era,2000-2009,2000 à 2009,4
+era,2010-2019,2010 à 2019,5
+era,2020-2026,2020 à 2026,6
+thr,250,250 min ou plus,1
+thr,500,500 min ou plus,2
+thr,1000,1 000 min ou plus,3
+thr,1500,1 500 min ou plus,4
+tol,10,Stricte,1
+tol,20,Standard,2
+tol,30,Large,3
+minlen,5,5 saisons ou plus,1
+minlen,7,7 saisons ou plus,2
+minlen,9,9 saisons ou plus,3
+minlen,11,11 saisons ou plus,4
+cohort,all,Tous les débuts,1
+cohort,1974-1989,1974 à 1989,2
+cohort,1990-1999,1990 à 1999,3
+cohort,2000-2009,2000 à 2009,4
+cohort,2010-2019,2010 à 2019,5

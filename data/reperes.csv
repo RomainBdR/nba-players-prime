@@ -1,0 +1,7 @@
+ordre,profil,mpm_min,mpm_max,min_low,min_high
+1,Superstar,33,38,2500,3000
+2,Titulaire,28,34,2000,2700
+3,Joueur de rotation,18,26,1200,1900
+4,Fond de banc,8,15,500,1000
+5,Joueur marginal,0,8,0,500
+6,Saison médiane de l’archive,,,1730,1730

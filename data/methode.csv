@@ -1,0 +1,21 @@
+cle,valeur,libelle
+boot_B,300,Rééchantillonnages par joueur
+ci_level,90,Niveau des intervalles (%)
+smooth_h,4.5,Demi-largeur du lissage (années)
+thr_default,500,Seuil de minutes par défaut (ramenées à 82 matchs)
+first_season,1974,Première saison analysée
+last_season,2026,Dernière saison analysée
+games_ref,82,Matchs de référence
+n_min_pairs,30,Paires minimales par âge
+n_players_all,4123,Joueurs dans l'analyse
+n_player_seasons,22105,Joueurs-saisons dans l'analyse
+n_player_seasons_q,15996,Joueurs-saisons à 500 min ou plus
+n_pairs_bpm,17202,Paires de saisons consécutives (BPM)
+window_seasons,3,Saisons de la fenêtre du pic individuel
+indiv_min_default,7,Carrière minimale par défaut (saisons)
+tol_sd_step,10,Pas de tolérance (centièmes d'écart-type)
+n_indiv_done,3090,Carrières terminées analysées
+n_indiv_shown,1342,Joueurs de l'explorateur
+lag_retired,2023,Dernière saison d'une carrière terminée
+ref_age_1,30,Premier âge de repère (ans)
+ref_age_2,34,Second âge de repère (ans)

@@ -1,0 +1,30 @@
+/* Jetons de style : ils reproduisent ceux de l’environnement du tableau de bord Claude, avec une variante sombre. */
+:root {
+  color-scheme: light dark;
+  --font-anthropic-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-anthropic-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --color-bg: #faf9f5; --color-panel: #ffffff; --color-fg: #1f1e1d; --color-fg-muted: #6b6a68; --color-border-line: #e6e4dd;
+  --color-ok: #2f7a3a; --color-warn: #9a6b00; --color-bad: #b3261e;
+  --cds-radius: 10px; --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 16px; --cds-gap-lg: 24px; --cds-gap-xl: 32px;
+  --cds-pad-xs: 6px; --cds-pad-sm: 10px; --cds-pad-md: 16px; --cds-pad-lg: 20px; --cds-pad-xl: 28px;
+  --cds-font-size-caption: 12px; --cds-font-size-body: 14px; --cds-font-size-heading: 16px; --cds-font-size-title: 22px; --cds-font-weight-medium: 500;
+  --cds-chart-grid: #eeede7; --cds-chart-axis: #cfcdc5; --cds-chart-reference: #9c9a92; --cds-chart-muted: #b9b7ae; --cds-chart-status-critical: #c0392b;
+  --cds-surface-popover: #fff; --cds-border: #d9d7cf; --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.12); --cds-text-secondary: #6b6a68;
+  --cds-dur-slow: 300ms; --cds-ease-out: cubic-bezier(.2,.8,.2,1);
+  --cds-chart-1: #2f6fbb; --cds-chart-2: #e07b39; --cds-chart-3: #3a9a8a; --cds-chart-4: #c4527a; --cds-chart-5: #7a6bd1; --cds-chart-6: #b59b2e; --cds-chart-7: #5b8f3a; --cds-chart-8: #8c6a4f;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1b1a19; --color-panel: #262524; --color-fg: #ecebe6; --color-fg-muted: #a3a19a; --color-border-line: #3a3937;
+    --cds-chart-grid: #33322f; --cds-chart-axis: #4a4945; --cds-chart-reference: #7d7b74; --cds-chart-muted: #5c5a55;
+    --cds-surface-popover: #2d2c2a; --cds-border: #454440; --cds-text-secondary: #a3a19a; --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.5);
+    --color-ok: #6fc07b; --color-warn: #e0b04a; --color-bad: #f08a80;
+    --cds-chart-1: #6aa3e6; --cds-chart-2: #f09a5e; --cds-chart-3: #5cc0ad; --cds-chart-4: #e07ba0; --cds-chart-5: #a093ee; --cds-chart-6: #d9c04f; --cds-chart-7: #86bf5f; --cds-chart-8: #b99277;
+  }
+}
+html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); font-size: 14px; }
+#dash-root { --dash-gutter: 16px; padding: var(--dash-gutter); position: relative; }
+.dash-skeleton { background: linear-gradient(90deg, rgba(128,128,128,.12), rgba(128,128,128,.22), rgba(128,128,128,.12)); border-radius: 6px; color: transparent; }
+[data-dash-source-state=empty] { color: transparent; }
+.site-foot { max-width: 1180px; margin: 8px auto 0; padding: 16px 0 32px; border-top: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.55; }
+.site-foot a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 2px; }

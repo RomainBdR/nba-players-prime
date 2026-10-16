@@ -1,0 +1,16 @@
+metric,label,famille,unite,dd,definition,axe,sd,ordre,pairs
+bpm,BPM,Impact global,pts/100 poss.,2,"Box Plus/Minus : contribution estimée du joueur à la marge de son équipe, en points pour 100 possessions, par rapport à la moyenne de la ligue.",Écart à la moyenne de la ligue (pts/100 poss.),2.7031,1,17202
+ws48,Win Shares / 48 min,Impact global,victoires/48 min,3,"Part de victoires attribuée au joueur par tranche de 48 minutes, écart à la moyenne de la ligue la même saison.",Écart à la moyenne de la ligue,0.0532,2,17202
+per,PER,Impact global,points de PER,2,"Player Efficiency Rating : synthèse par minute des statistiques positives et négatives, écart à la moyenne de la ligue la même saison.",Écart à la moyenne de la ligue,4.1441,3,17202
+vorp82,VORP (82 matchs),Impact global,VORP,2,"Value Over Replacement Player : valeur apportée par rapport à un joueur de remplacement, ramenée à une saison de 82 matchs.",Valeur par saison de 82 matchs,1.728,4,17204
+ws82,Win Shares (82 matchs),Impact global,victoires,2,"Nombre de victoires attribuées au joueur, ramené à une saison de 82 matchs.",Valeur par saison de 82 matchs,3.2884,5,17204
+obpm,BPM offensif,Attaque,pts/100 poss.,2,"Composante offensive du Box Plus/Minus, écart à la moyenne de la ligue.",Écart à la moyenne de la ligue (pts/100 poss.),2.3453,6,17202
+ts_rel,Adresse (TS %),Attaque,pts de %,2,"True Shooting % : efficacité au tir en tenant compte des trois points et des lancers francs, écart à la moyenne de la ligue.",Écart à la moyenne de la ligue (points de pourcentage),4.362,7,17163
+usg,Rôle offensif (USG %),Attaque,pts de %,2,"Part des possessions de l'équipe terminées par le joueur quand il est sur le terrain, écart à la moyenne de la ligue.",Écart à la moyenne de la ligue (points de pourcentage),5.0908,8,16435
+ast,Passes (AST %),Attaque,pts de %,2,"Part des paniers de ses coéquipiers sur lesquels le joueur délivre la passe, écart à la moyenne de la ligue.",Écart à la moyenne de la ligue (points de pourcentage),9.3275,9,17202
+dbpm,BPM défensif,Défense et rebond,pts/100 poss.,2,"Composante défensive du Box Plus/Minus, écart à la moyenne de la ligue.",Écart à la moyenne de la ligue (pts/100 poss.),1.1632,10,17202
+trb,Rebonds (TRB %),Défense et rebond,pts de %,2,"Part des rebonds disponibles captés par le joueur quand il est sur le terrain, écart à la moyenne de la ligue.",Écart à la moyenne de la ligue (points de pourcentage),4.537,11,17202
+stl,Interceptions (STL %),Défense et rebond,pts de %,2,"Part des possessions adverses se terminant par une interception du joueur, écart à la moyenne de la ligue.",Écart à la moyenne de la ligue (points de pourcentage),0.646,12,17202
+blk,Contres (BLK %),Défense et rebond,pts de %,2,"Part des tirs à deux points adverses contrés par le joueur, écart à la moyenne de la ligue.",Écart à la moyenne de la ligue (points de pourcentage),1.4319,13,17202
+mpg,Minutes par match,Disponibilité,min/match,1,"Temps de jeu moyen par match disputé, signe de la confiance de l'entraîneur.",Minutes par match,7.582,14,17204
+gp_share,Matchs disputés (%),Disponibilité,% des matchs,1,"Part des matchs de son équipe disputés par le joueur dans la saison (blessures, repos, rotation).",Part des matchs de l'équipe,13.9227,15,17204

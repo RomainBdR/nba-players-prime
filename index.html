@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le prime d’un joueur NBA</title>
+<meta name="description" content="Courbe de progression, prime et déclin des joueurs NBA, estimée sur les saisons 1974 à 2026 : âge du pic, fenêtre de prime, comparaisons par indicateur, poste et époque, trajectoires individuelles.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23e07b39'/%3E%3Cpath d='M16 2v28M2 16h28M6 6c6 5 6 15 0 20M26 6c-6 5-6 15 0 20' fill='none' stroke='%231f1e1d' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body data-appifact-content>
+<div id="dash-root">
+<div class="nb" id="nb">
+
+  <header class="nb-head">
+    <h1 class="nb-title" id="titre">Le prime d’un joueur NBA, de la progression au déclin</h1>
+    <p class="nb-lead dash-skeleton" id="lead" aria-live="polite"></p>
+  </header>
+
+  <section class="nb-filters" aria-label="Filtres">
+    <div class="nb-frow">
+      <label class="nb-field"><span class="nb-flabel">Indicateur</span><select id="f-metric" data-source="indicateurs"></select></label>
+      <label class="nb-field"><span class="nb-flabel">Poste</span><select id="f-pos" data-source="options"></select></label>
+      <label class="nb-field"><span class="nb-flabel">Époque</span><select id="f-era" data-source="options"></select></label>
+      <div class="nb-field"><span class="nb-flabel"><label for="f-thr">Minutes minimales</label><button type="button" class="nb-info" id="thr-info" aria-expanded="false" aria-controls="thr-pop" aria-label="Repères sur les minutes jouées par saison">i</button></span><select id="f-thr" data-source="options"></select></div>
+      <label class="nb-field"><span class="nb-flabel">Largeur de la prime</span><select id="f-tol" data-source="options"></select></label>
+      <button class="nb-reset" id="f-reset" type="button">Réinitialiser</button>
+    </div>
+    <div class="nb-pop" id="thr-pop" role="region" aria-label="Repères sur les minutes jouées par saison" hidden>
+      <p class="nb-pop-t">Combien de minutes joue-t-on dans une saison&nbsp;?</p>
+      <p class="nb-pop-s">Le seuil s’applique à chaque joueur et à chaque saison, avec des minutes ramenées à une saison de 82 matchs.</p>
+      <table class="nb-tbl nb-pop-tbl" id="tb-reperes" data-source="reperes" data-row-key="profil">
+        <thead><tr><th data-field="profil">Profil</th><th data-field="mpm_min">Match, de</th><th data-field="mpm_max">à</th><th data-field="min_low">Saison, de</th><th data-field="min_high">à</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="nb-pop-n">Ordres de grandeur issus de la connaissance générale du jeu, à l’exception de la dernière ligne, calculée sur les saisons de l’explorateur de joueurs.</p>
+    </div>
+    <p class="nb-sample" id="sample">
+      <span class="nb-sample-t">Échantillon&nbsp;:</span>
+      <span class="nb-n dash-skeleton" data-m="pics|n_pairs|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr|0">—</span> paires de saisons consécutives,
+      <span class="nb-n dash-skeleton" data-m="pics|n_players|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr|0">—</span> joueurs, saisons
+      <span class="nb-n dash-skeleton" data-m="methode|valeur|cle=first_season|y">—</span> à <span class="nb-n dash-skeleton" data-m="methode|valeur|cle=last_season|y">—</span>.
+    </p>
+  </section>
+
+  <nav class="nb-tabs" role="tablist" aria-label="Sections">
+    <button class="nb-tab" role="tab" type="button" data-tab="courbe" id="tabbtn-courbe" aria-controls="courbe">Courbe d’âge</button>
+    <button class="nb-tab" role="tab" type="button" data-tab="indicateurs" id="tabbtn-indicateurs" aria-controls="indicateurs">Indicateurs</button>
+    <button class="nb-tab" role="tab" type="button" data-tab="comparaisons" id="tabbtn-comparaisons" aria-controls="comparaisons">Comparaisons</button>
+    <button class="nb-tab" role="tab" type="button" data-tab="joueurs" id="tabbtn-joueurs" aria-controls="joueurs">Joueurs</button>
+    <button class="nb-tab" role="tab" type="button" data-tab="methode" id="tabbtn-methode" aria-controls="methode">Méthode</button>
+  </nav>
+
+  <!-- ===================== COURBE D’ÂGE ===================== -->
+  <section class="nb-panel" id="courbe" role="tabpanel" aria-labelledby="tabbtn-courbe">
+    <div class="nb-tiles">
+      <div class="nb-tile nb-hero">
+        <div class="nb-tl" id="hero-label">Âge du pic</div>
+        <div class="nb-tv"><span class="nb-big dash-skeleton" data-m="pics|peak|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr|1">—</span><span class="nb-unit">&nbsp;ans</span></div>
+        <div class="nb-tn">Intervalle à <span class="dash-skeleton" data-m="methode|valeur|cle=ci_level|0">—</span>&nbsp;% : de <span class="dash-skeleton" data-m="pics|peak_lo|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr|1">—</span> à <span class="dash-skeleton" data-m="pics|peak_hi|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr|1">—</span> ans</div>
+      </div>
+      <div class="nb-tile nb-wide">
+        <div class="nb-tl">Fenêtre de prime</div>
+        <div class="nb-tv"><span class="nb-mid dash-skeleton" data-m="fenetres|lo|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;tol=$tol|1">—</span><span class="nb-unit">&nbsp;à&nbsp;</span><span class="nb-mid dash-skeleton" data-m="fenetres|hi|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;tol=$tol|1">—</span><span class="nb-unit">&nbsp;ans</span></div>
+        <div class="nb-tn">À moins de <span class="dash-skeleton" data-m="fenetres|tol|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;tol=$tol|0">—</span>&nbsp;% d’un écart-type du maximum<span class="nb-flag" id="win-note"></span></div>
+      </div>
+      <div class="nb-tile">
+        <div class="nb-tl">Écart au pic à <span class="dash-skeleton" data-m="methode|valeur|cle=ref_age_1|0">—</span> ans</div>
+        <div class="nb-tv"><span class="nb-mid dash-skeleton" data-m="courbes|g|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;age=@ref_age_1|dd|plus">—</span><span class="nb-unit">&nbsp;<span class="dash-skeleton" data-m="indicateurs|unite|metric=$metric|t">—</span></span></div>
+        <div class="nb-tn">De <span class="dash-skeleton" data-m="courbes|g_lo|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;age=@ref_age_1|dd|plus">—</span> à <span class="dash-skeleton" data-m="courbes|g_hi|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;age=@ref_age_1|dd|plus">—</span> (<span class="dash-skeleton" data-m="methode|valeur|cle=ci_level|0">—</span>&nbsp;%)</div>
+      </div>
+      <div class="nb-tile">
+        <div class="nb-tl">Écart au pic à <span class="dash-skeleton" data-m="methode|valeur|cle=ref_age_2|0">—</span> ans</div>
+        <div class="nb-tv"><span class="nb-mid dash-skeleton" data-m="courbes|g|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;age=@ref_age_2|dd|plus">—</span><span class="nb-unit">&nbsp;<span class="dash-skeleton" data-m="indicateurs|unite|metric=$metric|t">—</span></span></div>
+        <div class="nb-tn">De <span class="dash-skeleton" data-m="courbes|g_lo|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;age=@ref_age_2|dd|plus">—</span> à <span class="dash-skeleton" data-m="courbes|g_hi|metric=$metric&amp;pos=$pos&amp;era=$era&amp;thr=$thr&amp;age=@ref_age_2|dd|plus">—</span> (<span class="dash-skeleton" data-m="methode|valeur|cle=ci_level|0">—</span>&nbsp;%)</div>
+      </div>
+    </div>
+
+    <article class="nb-card" id="card-curve">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Progression, prime et déclin</h2>
+        <p class="nb-note">Niveau moyen attendu à chaque âge, mesuré par rapport à son maximum (zéro correspond au pic). Il s’agit d’un joueur moyen : la trajectoire d’un joueur donné peut s’en écarter nettement (voir l’onglet Joueurs). Passez le pointeur ou touchez le graphique pour lire une valeur.</p>
+      </header>
+      <div class="nb-legend" id="lg-curve"></div>
+      <div class="nb-axcap" id="cap-curve"></div>
+      <div class="nb-chart dash-skeleton" id="ch-curve" data-source="courbes pics fenetres indicateurs"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-curve" data-source="courbes" data-row-key="metric,pos,era,thr,age">
+          <thead><tr><th data-field="age">Âge</th><th data-field="g">Écart au pic</th><th data-field="g_lo">Borne basse</th><th data-field="g_hi">Borne haute</th><th data-field="d_s">Variation annuelle</th><th data-field="n_pairs">Paires</th><th data-field="n_players">Joueurs</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+
+    <article class="nb-card" id="card-delta">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Variation d’une année sur l’autre</h2>
+        <p class="nb-note">Gain ou perte moyens entre l’âge indiqué et l’âge suivant. Les barres sont lissées (avec leur intervalle) ; les points gris sont les moyennes brutes, avant lissage. Le pic correspond au passage de la barre par zéro.</p>
+      </header>
+      <div class="nb-legend" id="lg-delta"></div>
+      <div class="nb-axcap" id="cap-delta"></div>
+      <div class="nb-chart dash-skeleton" id="ch-delta" data-source="courbes indicateurs"></div>
+    </article>
+  </section>
+
+  <!-- ===================== INDICATEURS ===================== -->
+  <section class="nb-panel" id="indicateurs" role="tabpanel" aria-labelledby="tabbtn-indicateurs" hidden>
+    <p class="nb-lead2" id="lead-ind"></p>
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Âge du pic selon l’indicateur</h2>
+        <p class="nb-note">Chaque ligne donne l’âge du pic et son intervalle à <span class="dash-skeleton" data-m="methode|valeur|cle=ci_level|0">—</span>&nbsp;%. Cliquer sur une ligne sélectionne l’indicateur. Un cercle vide signale un maximum situé au bord de la plage observée, donc sans pic intermédiaire net.</p>
+      </header>
+      <div class="nb-chart dash-skeleton" id="ch-metrics" data-source="pics indicateurs"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-metrics" data-source="pics" data-row-key="metric,pos,era,thr">
+          <thead><tr><th>Indicateur</th><th data-field="peak">Pic</th><th data-field="peak_lo">Borne basse</th><th data-field="peak_hi">Borne haute</th><th data-field="n_pairs">Paires</th><th>Remarque</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Toutes les courbes sur une même échelle</h2>
+        <p class="nb-note">Écart au pic exprimé en écarts-types de chaque indicateur, ce qui rend comparables des unités différentes ; le point marque le pic. Cliquer sur une vignette sélectionne l’indicateur.</p>
+      </header>
+      <div class="nb-mosaic dash-skeleton" id="ch-mosaic" data-source="courbes pics indicateurs"></div>
+    </article>
+  </section>
+
+  <!-- ===================== COMPARAISONS ===================== -->
+  <section class="nb-panel" id="comparaisons" role="tabpanel" aria-labelledby="tabbtn-comparaisons" hidden>
+    <div class="nb-segrow">
+      <span class="nb-flabel">Comparer selon</span>
+      <div class="nb-seg" id="seg-dim" role="group" aria-label="Critère de comparaison">
+        <button type="button" data-dim="pos">le poste</button>
+        <button type="button" data-dim="era">l’époque</button>
+        <button type="button" data-dim="thr">les minutes minimales</button>
+      </div>
+    </div>
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Âge du pic par groupe</h2>
+        <p class="nb-note">Segments : intervalle à <span class="dash-skeleton" data-m="methode|valeur|cle=ci_level|0">—</span>&nbsp;%. Lorsque deux segments se chevauchent largement, l’écart observé entre les groupes ne se distingue pas du hasard d’échantillonnage. Les autres filtres restent appliqués.</p>
+      </header>
+      <div class="nb-chart dash-skeleton" id="ch-groups" data-source="pics options indicateurs"></div>
+      <p class="nb-note" id="miss-groups" hidden></p>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-groups" data-source="pics" data-row-key="metric,pos,era,thr">
+          <thead><tr><th>Groupe</th><th data-field="peak">Pic</th><th data-field="peak_lo">Borne basse</th><th data-field="peak_hi">Borne haute</th><th data-field="n_pairs">Paires</th><th data-field="n_players">Joueurs</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Courbes par groupe</h2>
+        <p class="nb-note">Écart au pic de chaque groupe, avec son propre maximum pour référence : la forme de la courbe se compare, pas le niveau absolu.</p>
+      </header>
+      <div class="nb-legend" id="lg-groups"></div>
+      <div class="nb-axcap" id="cap-groups"></div>
+      <div class="nb-chart dash-skeleton" id="ch-groupcurves" data-source="courbes options indicateurs"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-groupcurves" data-source="courbes" data-row-key="metric,pos,era,thr,age">
+          <thead><tr><th>Groupe</th><th data-field="age">Âge</th><th data-field="g">Écart au pic</th><th data-field="g_lo">Borne basse</th><th data-field="g_hi">Borne haute</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Âge ou ancienneté&nbsp;?</h2>
+        <p class="nb-note" id="note-anc">Pic estimé par époque, selon l’âge du joueur puis selon son nombre de saisons passées en NBA.</p>
+      </header>
+      <div class="nb-pair">
+        <div>
+          <div class="nb-subh">Âge au pic</div>
+          <div class="nb-chart dash-skeleton" id="ch-anc-age" data-source="anciennete options"></div>
+        </div>
+        <div>
+          <div class="nb-subh">Saison de carrière au pic</div>
+          <div class="nb-chart dash-skeleton" id="ch-anc-exp" data-source="anciennete options"></div>
+        </div>
+      </div>
+      <p class="nb-read" id="read-anc"></p>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-anc" data-source="anciennete" data-row-key="metric,era,axe">
+          <thead><tr><th>Époque</th><th>Mesure</th><th data-field="peak">Pic</th><th data-field="lo">Borne basse</th><th data-field="hi">Borne haute</th><th data-field="rookie_age">Âge des recrues</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+  </section>
+
+  <!-- ===================== JOUEURS ===================== -->
+  <section class="nb-panel" id="joueurs" role="tabpanel" aria-labelledby="tabbtn-joueurs" hidden>
+    <p class="nb-lead2">Les courbes précédentes décrivent un joueur moyen. Ici, le pic de chaque joueur est défini comme le centre de sa meilleure période de <span class="dash-skeleton" data-m="methode|valeur|cle=window_seasons|0">—</span> saisons consécutives à plus de <span class="dash-skeleton" data-m="methode|valeur|cle=thr_default|0">—</span> minutes (ramenées à <span class="dash-skeleton" data-m="methode|valeur|cle=games_ref|0">—</span> matchs), pour les carrières terminées des joueurs entrés dans la ligue à partir de <span class="dash-skeleton" data-m="methode|valeur|cle=first_season|y">—</span>. Les filtres indicateur, poste et époque (saison d’entrée) s’appliquent.</p>
+    <div class="nb-segrow">
+      <span class="nb-flabel">Carrière d’au moins</span>
+      <div class="nb-seg" id="seg-minlen" role="group" aria-label="Durée minimale de carrière" data-source="options"></div>
+    </div>
+    <div class="nb-tiles nb-tiles3">
+      <div class="nb-tile nb-hero">
+        <div class="nb-tl">Âge médian du pic individuel</div>
+        <div class="nb-tv"><span class="nb-big dash-skeleton" data-m="indiv_resume|median|metric=$metric&amp;pos=$pos&amp;cohort=$era&amp;minlen=$minlen|1">—</span><span class="nb-unit">&nbsp;ans</span></div>
+        <div class="nb-tn">Moyenne : <span class="dash-skeleton" data-m="indiv_resume|mean|metric=$metric&amp;pos=$pos&amp;cohort=$era&amp;minlen=$minlen|1">—</span> ans</div>
+      </div>
+      <div class="nb-tile">
+        <div class="nb-tl">Moitié centrale des joueurs</div>
+        <div class="nb-tv"><span class="nb-mid dash-skeleton" data-m="indiv_resume|q25|metric=$metric&amp;pos=$pos&amp;cohort=$era&amp;minlen=$minlen|1">—</span><span class="nb-unit">&nbsp;à&nbsp;</span><span class="nb-mid dash-skeleton" data-m="indiv_resume|q75|metric=$metric&amp;pos=$pos&amp;cohort=$era&amp;minlen=$minlen|1">—</span><span class="nb-unit">&nbsp;ans</span></div>
+        <div class="nb-tn">Du dixième au quatre-vingt-dixième centile : de <span class="dash-skeleton" data-m="indiv_resume|p10|metric=$metric&amp;pos=$pos&amp;cohort=$era&amp;minlen=$minlen|1">—</span> à <span class="dash-skeleton" data-m="indiv_resume|p90|metric=$metric&amp;pos=$pos&amp;cohort=$era&amp;minlen=$minlen|1">—</span> ans</div>
+      </div>
+      <div class="nb-tile">
+        <div class="nb-tl">Carrières analysées</div>
+        <div class="nb-tv"><span class="nb-mid dash-skeleton" data-m="indiv_resume|n|metric=$metric&amp;pos=$pos&amp;cohort=$era&amp;minlen=$minlen|0">—</span><span class="nb-unit">&nbsp;joueurs</span></div>
+        <div class="nb-tn">Carrières terminées, entrées en NBA après la première saison analysée</div>
+      </div>
+    </div>
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Où se situe le pic de chaque joueur&nbsp;?</h2>
+        <p class="nb-note">Part des joueurs dont le pic individuel tombe à chaque âge. La bande claire donne la moitié centrale des joueurs et le trait la médiane.</p>
+      </header>
+      <div class="nb-chart dash-skeleton" id="ch-hist" data-source="indiv_hist indiv_resume indicateurs"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-hist" data-source="indiv_hist" data-row-key="metric,pos,cohort,minlen,age">
+          <thead><tr><th data-field="age">Âge</th><th data-field="n">Joueurs</th><th data-field="share">Part</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Un effet de sélection à garder en tête</h2>
+        <p class="nb-note">Pic individuel moyen (point) et moitié centrale des joueurs (segment) selon la durée minimale de carrière exigée. Plus on retient des carrières longues, plus le pic se décale, ce qui traduit sans doute pour une part un effet de sélection&nbsp;: les joueurs durables sont ceux dont le niveau s’est maintenu plus tard.</p>
+      </header>
+      <div class="nb-chart dash-skeleton" id="ch-minlen" data-source="indiv_resume options"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-minlen" data-source="indiv_resume" data-row-key="metric,pos,cohort,minlen">
+          <thead><tr><th data-field="minlen">Saisons minimales</th><th data-field="mean">Moyenne</th><th data-field="median">Médiane</th><th data-field="q25">Premier quartile</th><th data-field="q75">Troisième quartile</th><th data-field="n">Joueurs</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+    <article class="nb-card" id="card-player">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Explorer un joueur</h2>
+        <p class="nb-note">Saison par saison, le niveau du joueur (points) est comparé à la courbe moyenne recalée sur son propre niveau (trait pointillé) ; la zone colorée marque sa meilleure période.</p>
+      </header>
+      <div class="nb-search">
+        <input type="search" id="pl-q" class="nb-input" placeholder="Rechercher un joueur" aria-label="Rechercher un joueur" autocomplete="off" spellcheck="false">
+        <div class="nb-sugg" id="pl-sugg" role="listbox" aria-label="Résultats" hidden></div>
+      </div>
+      <div class="nb-chips" id="pl-chips" data-source="joueurs_resume"></div>
+      <p class="nb-pline" id="pl-line"></p>
+      <div class="nb-legend" id="lg-player"></div>
+      <div class="nb-axcap" id="cap-player"></div>
+      <div class="nb-chart dash-skeleton" id="ch-player" data-source="joueurs joueurs_resume courbes indicateurs"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-player" data-source="joueurs" data-row-key="player_id,season">
+          <thead><tr><th data-field="season">Saison</th><th data-field="age">Âge</th><th data-field="mp82">Minutes (saison complète)</th><th class="nb-th-val">Valeur</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+  </section>
+
+  <!-- ===================== MÉTHODE ===================== -->
+  <section class="nb-panel" id="methode" role="tabpanel" aria-labelledby="tabbtn-methode" hidden>
+    <article class="nb-card nb-prose">
+      <h2 class="nb-h2">Comment ces courbes sont construites</h2>
+      <p>Les données proviennent de Basketball-Reference, via l’archive compilée par Sumitro Datta&nbsp;: une ligne par joueur et par saison de NBA, de <span class="dash-skeleton" data-m="methode|valeur|cle=first_season|y">—</span> à <span class="dash-skeleton" data-m="methode|valeur|cle=last_season|y">—</span>, période pour laquelle le BPM, le VORP et la plupart des indicateurs avancés sont disponibles. L’âge est celui du joueur au premier février de la saison, et un joueur échangé en cours d’année n’est compté qu’une fois, sur sa ligne cumulée.</p>
+      <p>Moyenner simplement le niveau des joueurs présents à chaque âge serait trompeur&nbsp;: aux âges avancés, il ne reste dans la ligue que ceux dont le niveau a suffi pour y rester, si bien que la moyenne par âge sous-estime fortement le déclin (biais de survie, illustré plus bas). On mesure donc la variation du niveau d’un même joueur entre deux saisons consécutives, on moyenne ces variations pour chaque âge en pondérant par les minutes jouées, on les lisse par régression locale, puis on les cumule pour reconstituer la courbe. Le pic est l’âge où la variation annuelle lissée passe de positive à négative.</p>
+      <p>Pour les indicateurs de taux (BPM, PER, Win Shares par 48 minutes, pourcentages), chaque valeur est exprimée en écart à la moyenne de la ligue la même saison, ce qui neutralise l’évolution du style de jeu&nbsp;; les indicateurs de volume (VORP, Win Shares) sont ramenés à une saison de <span class="dash-skeleton" data-m="methode|valeur|cle=games_ref|0">—</span> matchs. Seules les paires de saisons où le joueur dépasse le seuil de minutes choisi les deux années sont retenues (<span class="dash-skeleton" data-m="methode|valeur|cle=thr_default|0">—</span> minutes par défaut, un compromis entre taille d’échantillon et bruit).</p>
+      <p>Les intervalles proviennent de <span class="dash-skeleton" data-m="methode|valeur|cle=boot_B|0">—</span> rééchantillonnages de joueurs entiers (bootstrap par grappes) et couvrent <span class="dash-skeleton" data-m="methode|valeur|cle=ci_level|0">—</span>&nbsp;% des tirages. Ils mesurent l’incertitude d’échantillonnage, mais pas le choix de la méthode, d’où le test de robustesse plus bas. La fenêtre de prime regroupe les âges où le niveau moyen attendu reste à moins d’une fraction donnée de l’écart-type de l’indicateur (réglée par «&nbsp;Largeur de la prime&nbsp;») de son maximum&nbsp;: c’est une convention de lecture, non une frontière physiologique.</p>
+    </article>
+
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Pourquoi pas une simple moyenne par âge&nbsp;?</h2>
+        <p class="nb-note">Les deux courbes sont ramenées à leur propre maximum. La moyenne brute des joueurs présents à chaque âge (en gris) décline bien moins vite et culmine plus tard que la courbe reconstituée à partir des variations d’un même joueur (en couleur), car les joueurs qui restent sont les meilleurs.</p>
+      </header>
+      <div class="nb-legend" id="lg-naive"></div>
+      <div class="nb-axcap" id="cap-naive"></div>
+      <div class="nb-chart dash-skeleton" id="ch-naive" data-source="courbes indicateurs"></div>
+      <div class="nb-subh nb-mt">Nombre de joueurs-saisons observés à chaque âge</div>
+      <div class="nb-chart dash-skeleton" id="ch-survie" data-source="courbes"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-naive" data-source="courbes" data-row-key="metric,pos,era,thr,age">
+          <thead><tr><th data-field="age">Âge</th><th data-field="g">Écart au pic (variations)</th><th data-field="naive_g">Écart au pic (moyenne brute)</th><th data-field="naive_n">Joueurs-saisons</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Le résultat dépend-il de la méthode&nbsp;?</h2>
+        <p class="nb-note">Âge du pic de l’indicateur sélectionné (échantillon de référence : toutes saisons, tous postes) selon les choix d’estimation. Les segments donnent l’intervalle à <span class="dash-skeleton" data-m="methode|valeur|cle=ci_level|0">—</span>&nbsp;% lorsqu’il est calculé.</p>
+      </header>
+      <div class="nb-chart dash-skeleton" id="ch-rob" data-source="robustesse indicateurs"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-rob" data-source="robustesse" data-row-key="metric,variant">
+          <thead><tr><th>Variante</th><th data-field="peak">Pic</th><th data-field="lo">Borne basse</th><th data-field="hi">Borne haute</th><th data-field="n">Observations</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+
+    <article class="nb-card">
+      <header class="nb-card-h">
+        <h2 class="nb-h2">Qui joue à quel âge&nbsp;?</h2>
+        <p class="nb-note">Part des minutes de la ligue jouées à chaque âge pour l’époque sélectionnée&nbsp;: les âges extrêmes sont rares, ce qui explique l’incertitude croissante des courbes aux marges.</p>
+      </header>
+      <div class="nb-chart dash-skeleton" id="ch-minutes" data-source="ligue_age"></div>
+      <details class="nb-det"><summary>Voir les valeurs</summary>
+        <div class="nb-tblwrap"><table class="nb-tbl" id="tb-minutes" data-source="ligue_age" data-row-key="era,age">
+          <thead><tr><th data-field="age">Âge</th><th data-field="minutes_share">Part des minutes</th><th data-field="n_seasons">Joueurs-saisons</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+    </article>
+
+    <article class="nb-card">
+      <h2 class="nb-h2">Indicateurs utilisés</h2>
+      <div class="nb-tblwrap nb-tall"><table class="nb-tbl nb-gloss" id="tb-gloss" data-source="indicateurs" data-row-key="metric">
+        <thead><tr><th data-field="label">Indicateur</th><th data-field="famille">Famille</th><th data-field="definition">Définition</th></tr></thead>
+        <tbody></tbody></table></div>
+    </article>
+
+    <article class="nb-card nb-prose">
+      <h2 class="nb-h2">Limites</h2>
+      <p>Ces courbes décrivent un joueur moyen et non un joueur donné&nbsp;: la dispersion entre individus est large, et un joueur peut culminer plusieurs années avant ou après l’âge moyen, comme le montre l’onglet Joueurs.</p>
+      <p>Les indicateurs reposent sur des statistiques de feuille de match et sur des formules (BPM, PER, Win Shares) qui valorisent inégalement les contributions défensives et collectives&nbsp;; un indicateur n’est qu’un reflet partiel de l’impact réel d’un joueur.</p>
+      <p>Les joueurs qui quittent la ligue après une mauvaise saison ne forment pas de paire de saisons&nbsp;; la méthode atténue le biais de sélection sans le supprimer, surtout aux âges avancés où les échantillons sont petits (voir le graphique ci-dessus sur les effectifs).</p>
+      <p>Enfin, l’analyse est descriptive&nbsp;: elle ne permet pas d’attribuer le déclin à la seule physiologie, puisque les rôles, les blessures et les décisions des entraîneurs évoluent eux aussi avec l’âge. Les pics individuels ne portent que sur des carrières terminées, de sorte que les cohortes récentes sont moins bien représentées.</p>
+    </article>
+  </section>
+
+  <div class="nb-tip" id="tip" role="tooltip" hidden></div>
+</div>
+
+
+<footer class="site-foot">
+  Données&nbsp;: statistiques NBA par joueur et par saison de Basketball-Reference, via l’archive Kaggle
+  <a href="https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats">NBA Stats (1947-present)</a> de sumitrodatta.
+  Le dossier <code>data/</code> contient les résultats des calculs décrits dans l’onglet Méthode, ainsi que les indicateurs par joueur et par saison extraits de l’archive pour l’explorateur de joueurs, et non l’archive complète.
+</footer>
+</div>
+<script src="assets/d3.min.js"></script>
+<script src="assets/dash.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
